@@ -1,9 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import PropType from 'prop-types';
 
-export const NotificationItemShape = PropTypes.shape({
-  id: PropTypes.number.isRequired,
-  html: PropTypes.shape({ __html: PropTypes.string}),
-  type: PropTypes.string.isRequired,
-  value: PropTypes.string
-})
+export default PropType.shape({
+  id: PropType.number.isRequired,
+  html: PropType.shape({__html: PropType.string}),
+  type: PropType.string.isRequired,
+  value: PropType.string
+});

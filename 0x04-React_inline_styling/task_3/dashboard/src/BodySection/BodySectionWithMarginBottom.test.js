@@ -1,16 +1,17 @@
-import React from 'react';
+import React from "react";
 import { shallow } from 'enzyme';
-import BodySection from './BodySection';
 import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
 import { StyleSheetTestUtils } from 'aphrodite';
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
-});
+describe("Testing BodySectionWithMarginBottom Component",() => {
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
 
-const wrapper = shallow(<BodySectionWithMarginBottom title="this is a test"/>)
-describe('BodySectionWithMarginBottom', () => {
-  it('renders correctly', () => {
-    expect(wrapper.containsMatchingElement(<BodySection/>)).toEqual(true)
-  })
-})
+  it('checking that shallowing the component should render correctly a BodySection component and that the props are passed correctly to the child component', () => {
+    let wrapper = shallow(<BodySectionWithMarginBottom title="test title" />);
+		expect(wrapper.find("BodySection").exists()).toBe(true);
+    wrapper = shallow(<BodySectionWithMarginBottom title="test title"><p>test children</p></BodySectionWithMarginBottom>)
+		expect(wrapper.find("BodySection").props().title).toBe('test title');
+  });
+});

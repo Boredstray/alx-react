@@ -1,14 +1,8 @@
-table {
-    width: 100%;
-    margin: 0 auto;
-    border: 1px solid black;
+table#CourseList {
+  width: 100%;
+  border: 1px solid gray;
 }
 
-th {
-    border-bottom: 1px solid black;
-    text-align: left;
-}
-
-th[colspan="2"]{
-    text-align: center;
+th{
+  border-bottom: 1.5px solid gray;
 }

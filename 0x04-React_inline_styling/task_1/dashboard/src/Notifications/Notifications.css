@@ -1,7 +1,12 @@
-[data-notification-type="default"]{
-    color: darkblue;
+.menuItem {
+  text-align: right;
+  margin-bottom: 1rem;
 }
 
-[data-notification-type="urgent"]{
-    color: red;
+[data-notification-type="default"] {
+  color: blue;
+}
+
+[data-notification-type="urgent"] {
+  color: red;
 }

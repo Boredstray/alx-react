@@ -2,13 +2,18 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import BodySection from './BodySection';
 
-
-const wrapper = shallow(<BodySection title="test title">
-                          <p>test children node</p>
-                        </BodySection>)
-describe('BodySection component', () => {
-  it('renders correctly', () => {
-     expect(wrapper.containsMatchingElement(<h2>test title</h2>)).toEqual(true)
-     expect(wrapper.containsMatchingElement(<p>test children node</p>)).toEqual(true)
-  })
-})
+describe('Testing BodySection Component', () => {
+  it('render correctly the children and one h2 element', () => {
+    const wrapper = shallow(
+      <BodySection
+        title='test title'
+      >
+        <p>test children node</p>
+      </BodySection>);
+    const title = wrapper.find('h2');
+    const child = wrapper.find('p');
+    expect(title.text()).toEqual('test title');
+    expect(child.text()).toEqual('test children node');
+    expect(wrapper.containsAllMatchingElements([title, child])).toEqual(true);
+  });
+});

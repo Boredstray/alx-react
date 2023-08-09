@@ -1,34 +1,49 @@
-import React from 'react';
-import CourseList from './CourseList';
-import { listCourses } from '../App/App';
-import { shallow } from 'enzyme';
+import React from "react";
+import { shallow, mount } from "enzyme";
+import CourseList from "./CourseList";
 import { StyleSheetTestUtils } from 'aphrodite';
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
+describe("Testing <CourseList />", () => {
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  it("Renders CourseList component without crashing", () => {
+    let wrapper = shallow(<CourseList />);
+    expect(wrapper.exists());
+  });
+
+  it("CourseList renders the 3 different rows", () => {
+    let wrapper = shallow(<CourseList />);
+    expect(wrapper.find("CourseListRow")).toHaveLength(3);
+  });
+
+  it("verify that CourseList renders correctly if you pass an empty array or if you don’t pass the listCourses property", () => {
+    const listCourses = [];
+    let wrapper = shallow(<CourseList />);
+    expect(wrapper.find('CourseListRow').last().props().textFirstCell).toEqual("No course available yet");
+    wrapper = shallow(<CourseList listCourses={[]}/>);
+    expect(wrapper.find('CourseListRow').last().props().textFirstCell).toEqual("No course available yet");
+  });
+
 });
 
-const wrapper = shallow(<CourseList/>)
-describe('CourseList component when listCourses prop is empty/not specified', () => {
-  it('renders without crashing', () => {
-   shallow(<CourseList/>)
-  })
+describe("Testing <CourseList listCourses={listCourses}/>", () => {
+  let wrapper;
 
-  it('renders the 2 headings', () => {
-    expect(wrapper.find('table thead').children().length).toEqual(2);
-  })
-})
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+    const listCourses = [
+      {id: 1, name: 'ES6', credit: 60},
+      {id: 2, name: 'Webpack', credit: 20},
+      {id: 3, name: 'React', credit: 40}
+    ];
+    wrapper = shallow(<CourseList listCourses={listCourses}/>);
+  });
 
-const wrapper2 = shallow(<CourseList listCourses={listCourses}/>)
-const coursesLength = listCourses.length
-describe('CourseList component when listCourses prop is empty/not specified', () => {
-  it('renders without crashing', () => {
-   shallow(<CourseList/>)
-  })
-
-
-  it('renders the 5 different rows', () => {
-    expect(wrapper2.find('table thead').children().length).toEqual(2);
-    expect(wrapper2.find('table tbody').children().length).toEqual(coursesLength);
-  })
-})
+  it("verify that when you pass a list of courses, the component renders it correctly", () => {
+    expect(wrapper.findWhere((node)=>{return node.props().textFirstCell === "ES6"})).toHaveLength(1);
+    expect(wrapper.findWhere((node)=>{return node.props().textFirstCell === "Webpack"})).toHaveLength(1);
+    expect(wrapper.findWhere((node)=>{return node.props().textFirstCell === "React"})).toHaveLength(1);
+  });
+});

@@ -1,33 +1,49 @@
 import React from 'react';
-import CourseListRow from './CourseListRow';
 import { shallow } from 'enzyme';
-import { StyleSheetTestUtils } from 'aphrodite';
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
+import CourseListRow from './CourseListRow';
+
+describe('<CourseListRow /> component test', () => {
+  it('renders one cell (<th>) with colspan = 2 when `textSecondCell` is null', () => {
+    const isHeader = true;
+    const wrapper = shallow(
+      <CourseListRow
+        isHeader={isHeader}
+        textFirstCell='test 1st cell'
+      />);
+
+    expect(wrapper
+      .find('th')
+    ).toHaveLength(1);
+  });
+
+  it('renders two cell (<th>) when `textSecondCell` is not null', () => {
+    const isHeader = true;
+    const wrapper = shallow(
+      <CourseListRow
+        isHeader={isHeader}
+        textSecondCell='test 2nd cell'
+        textFirstCell='test 1st cell'
+      />);
+
+    expect(wrapper
+      .find('th')
+    ).toHaveLength(2);
+  });
+
+  it('renders two cell (<td>) when `textSecondCell` is not null', () => {
+    const isHeader = false;
+    const wrapper = shallow(
+      <CourseListRow
+        isHeader={isHeader}
+        textSecondCell='test 2nd cell'
+        textFirstCell='test 1st cell'
+      />);
+
+    expect(wrapper
+      .find('tr')
+      .children()
+      .find('td')
+    ).toHaveLength(2);
+  });
 });
-
-
-describe('CourseListRow component when isHeader prop is true', () => {
-  it('renders one cell with colspan=2 when textSecondCell does not exist', () => {
-    const wrapper = shallow(<CourseListRow isHeader={true} textFirstCell="Test run"/>)
-    // console.log(wrapper.html())
-    expect(wrapper.html()).toBe('<tr style="background:#deb5b545"><th colSpan="2">Test run</th></tr>')
-
-  })
-
-  it('renders two cells when textSecondCell is present', () => {
-    const wrapper = shallow(<CourseListRow isHeader={true} textFirstCell="Test run" textSecondCell="Test run"/>)
-    // console.log(wrapper.html())
-    expect(wrapper.find('tr').children().length).toEqual(2);
-    expect(wrapper.html()).toBe('<tr style="background:#deb5b545"><th>Test run</th><th>Test run</th></tr>')
-  })
-})
-
-describe('CourseListRow component when isHeader prop is false', () => {
-  it(' renders correctly two td elements within a tr element', () => {
-    const wrapper = shallow(<CourseListRow isHeader={false} textFirstCell="Test run"/>)
-    // console.log(wrapper.html())
-    expect(wrapper.find('tr').children().length).toEqual(2);
-  })
-})

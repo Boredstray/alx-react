@@ -1,21 +1,16 @@
 import { getFullYear, getFooterCopy, getLatestNotification } from './utils';
 
-test('function returns current year', () => {
-  const year = getFullYear();
-  expect(year).toEqual(2022);
+test('returns current year', () => {
+  expect(getFullYear()).toBe(2023);
 })
 
-test('returns correct string when boolean arg is true', () => {
-  const str = getFooterCopy(true)
-  expect(str).toEqual('Holberton School')
-})
+test('correct footer copy', () => {
+  expect(getFooterCopy(true)).toBe('Holberton School');
+  expect(getFooterCopy(false)).toBe('Holberton School main dashboard');
+});
 
-test('returns correct string when boolean arg is false', () => {
-  const str = getFooterCopy(false)
-  expect(str).toEqual('Holberton School main dashboard')
-})
-
-test('returns dict containing string value', () => {
-  const str = getLatestNotification()
-  expect(str.__html).toEqual('<strong>Urgent requirement</strong> - complete by EOD')
-})
+test('returns right notification', () => {
+  expect(getLatestNotification()).toBe(
+    '<strong>Urgent requirement</strong> - complete by EOD'
+  );
+});

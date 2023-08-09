@@ -1,34 +1,31 @@
 import React from 'react';
-import CourseList from './CourseList';
-import { listCourses } from '../App/App';
 import { shallow } from 'enzyme';
-import { StyleSheetTestUtils } from 'aphrodite';
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
+import CourseList from './CourseList';
+import CourseListRow from './CourseListRow';
+
+describe('<CourseList /> component test', () => {
+  const listCourses = [
+    { id: 1, name: 'ES6', credit: 60 },
+    { id: 2, name: 'Webpack', credit: 20 },
+    { id: 3, name: 'React', credit: 40 }
+  ];
+  const wrapper = shallow(<CourseList listCourses={listCourses} />);
+  it('renders CourseList component without crashing', () => {
+    expect(wrapper).toBeDefined();
+  });
+
+  it('renders it correctly when listCourses has values', () => {
+    expect(wrapper.find(CourseListRow)).toHaveLength(5);
+  });
+
+  it('renders when the prop `listCourses=[]`', () => {
+    const wrapper = shallow(<CourseList listCourses={[]} />);
+    expect(wrapper).toBeDefined();
+  });
+
+  it('renders 0 rows when `listCourses=[]`', () => {
+    const wrapper = shallow(<CourseList listCourses={[]} />);
+    expect(wrapper.find(CourseListRow)).toHaveLength(2);
+  });
 });
-
-const wrapper = shallow(<CourseList/>)
-describe('CourseList component when listCourses prop is empty/not specified', () => {
-  it('renders without crashing', () => {
-   shallow(<CourseList/>)
-  })
-
-  it('renders the 2 headings', () => {
-    expect(wrapper.find('table thead').children().length).toEqual(2);
-  })
-})
-
-const wrapper2 = shallow(<CourseList listCourses={listCourses}/>)
-const coursesLength = listCourses.length
-describe('CourseList component when listCourses prop is empty/not specified', () => {
-  it('renders without crashing', () => {
-   shallow(<CourseList/>)
-  })
-
-
-  it('renders the 5 different rows', () => {
-    expect(wrapper2.find('table thead').children().length).toEqual(2);
-    expect(wrapper2.find('table tbody').children().length).toEqual(coursesLength);
-  })
-})

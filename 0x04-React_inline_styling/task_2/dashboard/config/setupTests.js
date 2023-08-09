@@ -1,5 +1,8 @@
-import Enzyme from 'enzyme';
+// Enzyme setup file
+import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+const { StyleSheetTestUtils } = require('aphrodite');
 
-Enzyme.configure({ adapter: new Adapter() });
+StyleSheetTestUtils.suppressStyleInjection();
 
+configure({ adapter: new Adapter() });

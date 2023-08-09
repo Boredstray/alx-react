@@ -1,48 +1,48 @@
 import React from 'react';
+import PropType from 'prop-types';
+import CourseShape from './CourseShape';
 import CourseListRow from './CourseListRow';
-import { StyleSheet, css} from 'aphrodite';
-import {CourseShape} from './CourseShape';
-import PropTypes from 'prop-types';
+import {  StyleSheet, css } from 'aphrodite';
 
-const styles = StyleSheet.create({
-  table: {
-    width: "100%",
-    margin: "0 auto",
-    border: "1px solid black"
-  }
- 
-})
-
-export default function CourseList(props) {
-  const renderCourses = () => {
-    if (props.listCourses.length == 0){
-      return <CourseListRow textFirstCell="No course available yet"/>
-    } else {
-      const rows = props.listCourses.map((course) => {
-        // console.log(course);
-        return <CourseListRow key={course.id} textFirstCell={course.name} textSecondCell={course.credit}/>
-      })
-      return rows
-    }
-  }
+function CourseList({ listCourses }) {
   return (
-      <table className={css(styles.table)} id="CourseList">
-        <thead>
-          <CourseListRow textFirstCell="Available courses" isHeader={true}/>
-          <CourseListRow textFirstCell="Course name" textSecondCell="Credit" and isHeader={true}/>
-        </thead>
-        <tbody>
-          {renderCourses()}
-        </tbody>
-      </table>
-    )
+    <table id="CourseList" cellPadding="0" cellSpacing="0" className={css(courseListStyles.table)}>
+      <thead>
+        <CourseListRow isHeader={true} textFirstCell='Available courses' />
+        <CourseListRow isHeader={true} textFirstCell='Course name' textSecondCell="Credit" />
+      </thead>
+      <tbody>
+        {
+        listCourses.length == 0 ?
+          <CourseListRow isHeader={false} textFirstCell='No course available yet'/>
+        : null
+        }
+        {
+          listCourses.map((val, idx) => {
+            return <CourseListRow isHeader={false} textFirstCell={val.name} textSecondCell={val.credit} key={val.id}/>
+          })
+        }
+      </tbody>
+    </table>
+  );
 }
 
+const courseListStyles = StyleSheet.create({
+	table: {
+		display: 'table',
+		border: '1px solid',
+		borderCollapse: 'collapse',
+		margin: '2rem auto 0 auto',
+		width: '90%',
+	}
+});
 
 CourseList.defaultProps = {
   listCourses: []
-}
+};
 
-CourseList.propTypes = {
-  listCourses: PropTypes.arrayOf(CourseShape)
-}
+CourseList.propType = {
+  listCourses: PropType.arrayOf(CourseShape)
+};
+
+export default CourseList;

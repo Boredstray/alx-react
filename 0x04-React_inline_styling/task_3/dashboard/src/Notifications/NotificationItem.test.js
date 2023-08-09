@@ -1,40 +1,23 @@
 import React from 'react';
-import NotificationItem from './NotificationItem';
-import Notifications from './Notifications';
 import { shallow } from 'enzyme';
+import NotificationItem from './NotificationItem';
 import { StyleSheetTestUtils } from 'aphrodite';
 
-beforeEach(() => {
-  StyleSheetTestUtils.suppressStyleInjection();
-});
-
-
-describe('NotificationItem component', () => {
-  it('renders without crashing',() => {
-    shallow(<NotificationItem/>);
-  })
-
-  it('renders the correct html (with given dummy  type and value props)', () => {
-    const wrapper = shallow(<NotificationItem type="urgent" value="test"/>);
-    const html = wrapper.html()
-    // console.log(wrapper.html());
-    expect(html).toBe('<li class="urgent_137u7ef-o_O-listItem_1fp99j6" data-notification-type="urgent">test</li>')
-  })
-
-  it('renders the correct html (with given dummy html props)', () => {
-    const wrapper = shallow(<NotificationItem html={{ __html: '<u>test</u>' }} />);
-    const html = wrapper.html()
-    expect(html).toBe('<li class="default_15qxxom-o_O-listItem_1fp99j6" data-notification-type="default"><u>test</u></li>')
-  })
-
-  afterEach(() => {
-    jest.restoreAllMocks();
+describe("Testing <NotificationItem />", () => {
+  let  wrapper;
+  
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
   });
 
-  it('spys markAsRead', () => {
-    const spy = jest.spyOn(Notifications.prototype, 'markAsRead')
-    const wrapper = shallow(<NotificationItem html={{ __html: '<u>test</u>' }} id={1} markAsRead={spy} />);
-    wrapper.simulate('click')
-    expect(spy).toHaveBeenCalledWith(1);
-  })
-})
+  it("<NotificationItem /> renders without crashing", () => {
+    wrapper = shallow(<NotificationItem />);
+    expect(wrapper.exists());
+  });
+
+  it("<NotificationItem />  renders the correct html by passing dummy type and value props,", () => {
+    wrapper = shallow(<NotificationItem type="default" value="test" />);
+    expect(wrapper.find("li").text()).toBe("test");
+    expect(wrapper.find("li").prop("data-notification-type")).toBe("default");
+  });
+});

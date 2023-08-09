@@ -1,29 +1,35 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import React from "react";
+import { mount } from 'enzyme';
+import { jest } from '@jest/globals';
+import WithLogging from "./WithLogging";
 import Login from '../Login/Login';
-import withLogging from './WithLogging';
+import { StyleSheetTestUtils } from 'aphrodite';
 
-const LoginComponent = withLogging(Login)
-const wrapper = shallow(<LoginComponent/>)
-describe('WithLogging HOC', () => {
-  afterEach(() => {
+describe("Testing WithLogging HOC", () => {
+  beforeEach(() => {
+    StyleSheetTestUtils.suppressStyleInjection();
+  });
+
+  it("should make sure console.log was called on mount and on unmount with Component when the wrapped element is pure html", () => {
+    console.log = jest.fn();
+    const Hoc = WithLogging(() => <p>Hello there</p>);
+    const comp = <Hoc title="hello" />;
+    let wrapper = mount(comp);
+    expect(console.log).toBeCalledWith('Component Component is mounted');
+    wrapper.unmount();
+    expect(console.log).toBeCalledWith('Component Component is going to unmount');
     jest.restoreAllMocks();
   });
 
-  it('calls console.log twice',() => {
-    const instance = wrapper.instance()
-    const log = jest.spyOn(console, "log").mockImplementation(() => {});
-    instance.componentDidMount()
-    instance.componentWillUnmount()
-    expect(log).toHaveBeenCalledTimes(2);
-  })
+  it("should make sure console.log was called on mount and on unmount with the name of the component when the wrapped element is the Login component", () => {
+    console.log = jest.fn();
+    const Hoc = WithLogging(Login);
+    const comp = <Hoc/>;
+    let wrapper = mount(comp);
+    expect(console.log).toBeCalledWith('Component Login is mounted');
+    wrapper.unmount();
+    expect(console.log).toBeCalledWith('Component Login is going to unmount');
+    jest.restoreAllMocks();
+  });
 
-  it('logs the right message',() => {
-    const instance = wrapper.instance()
-    const log = jest.spyOn(console, "log").mockImplementation(() => {});
-    instance.componentDidMount()
-    expect(log.mock.calls[0][0]).toBe('Component Login is mounted')
-    instance.componentWillUnmount()
-    expect(log.mock.calls[1][0]).toBe('Component Login is going to unmount')
-  })
-})
+});

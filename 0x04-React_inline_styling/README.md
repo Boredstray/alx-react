@@ -1,1 +1,1 @@
-# React Inline Styling
+# Inline React CSS
